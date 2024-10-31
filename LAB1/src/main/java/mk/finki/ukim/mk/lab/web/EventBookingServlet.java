@@ -6,7 +6,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import mk.finki.ukim.mk.lab.model.EventBooking;
 import mk.finki.ukim.mk.lab.service.impl.EventBookingServiceImpl;
 import org.thymeleaf.context.WebContext;

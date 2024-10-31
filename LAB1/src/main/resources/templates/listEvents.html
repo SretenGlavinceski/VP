@@ -53,6 +53,7 @@
                 Name: <span th:text="${event.name}"></span> ,
                 Description: <span th:text="${event.description}"></span> ,
                 Rating: <span th:text="${event.popularityScore}"></span>
+                Category: <span th:text="${event.getCategory().getTypeCategory()}"></span>
             </label>
             <br>
         </div>
@@ -112,6 +113,48 @@
     <br>
     <br>
 
+
+<!--    ad-->
+
+    <form th:method="GET" th:action="@{/event}" id="filter-category">
+        <h3>Filter Events by Category</h3>
+        <br>
+
+        <select name="selectedCategory" id="selectedCategory">
+
+            <div th:each="category : ${categories}">
+                <option th:value="${category.getTypeCategory()}">
+                    <th:block th:text="${category.getTypeCategory()}"></th:block>
+                </option>
+            </div>
+        </select>
+
+        <br>
+        <br>
+        <input type="submit" value="Submit">
+    </form>
+
+    <br>
+    <br>
+
+    <table th:if="${!eventsByCategory.isEmpty()}">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Popularity Score</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="event : ${eventsByCategory}">
+            <td><th:block th:text="${event.getName()}"></th:block></td>
+            <td><th:block th:text="${event.getDescription()}"></th:block></td>
+            <td><th:block th:text="${event.getPopularityScore()}"></th:block></td>
+        </tr>
+        </tbody>
+    </table>
+    <br>
+    <br>
 </main>
 </body>
 </html>

@@ -1,5 +1,6 @@
 package mk.finki.ukim.mk.lab.service.impl;
 
+import mk.finki.ukim.mk.lab.model.Category;
 import mk.finki.ukim.mk.lab.model.Event;
 import mk.finki.ukim.mk.lab.repository.EventRepository;
 import mk.finki.ukim.mk.lab.service.EventService;
@@ -19,6 +20,15 @@ public class EventServiceImpl implements EventService {
     @Override
     public List<Event> listAll() {
         return eventRepository.findAll();
+    }
+    @Override
+    public List<Category> listAllCategories() {
+        return eventRepository.listAllCategories();
+    }
+
+    @Override
+    public List<Event> searchByCategory(String name) {
+        return eventRepository.searchByCategory(name);
     }
 
     @Override

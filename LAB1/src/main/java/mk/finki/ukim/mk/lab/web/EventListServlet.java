@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import mk.finki.ukim.mk.lab.model.Category;
 import mk.finki.ukim.mk.lab.model.Event;
 import mk.finki.ukim.mk.lab.service.impl.EventServiceImpl;
 import org.thymeleaf.context.WebContext;
@@ -33,15 +34,21 @@ public class EventListServlet extends HttpServlet {
 
         String nameFilter = req.getParameter("filterName");
         String scoreFilter = req.getParameter("filterRating");
+        String selectedCategory = req.getParameter("selectedCategory");
+
+        List<Event> listByCategory = new ArrayList<>();
+        if (selectedCategory != null) {
+            listByCategory = eventService.searchByCategory(selectedCategory);
+        }
 
         if (nameFilter == null || nameFilter.isEmpty() || scoreFilter == null || scoreFilter.isEmpty())
-            renderPage(req, resp, new ArrayList<>());
+            renderPage(req, resp, new ArrayList<>(), listByCategory);
         else
-            renderPage(req, resp, eventService.searchEventsByNameAndScore(nameFilter, Double.parseDouble(scoreFilter)));
+            renderPage(req, resp, eventService.searchEventsByNameAndScore(nameFilter, Double.parseDouble(scoreFilter)), listByCategory);
 
     }
 
-    private void renderPage(HttpServletRequest req, HttpServletResponse resp, List<Event> filteredEvents) throws IOException {
+    private void renderPage(HttpServletRequest req, HttpServletResponse resp, List<Event> filteredEvents, List<Event> eventsByCategory) throws IOException {
 
         boolean isValid = req.getParameter("isValid") == null;
 
@@ -53,6 +60,9 @@ public class EventListServlet extends HttpServlet {
         webContext.setVariable("events", eventService.listAll());
         webContext.setVariable("filteredEvents", filteredEvents);
         webContext.setVariable("isValid", isValid);
+        webContext.setVariable("categories", eventService.listAllCategories());
+        webContext.setVariable("eventsByCategory", eventsByCategory);
+
 
         this.springTemplateEngine.process("listEvents.html", webContext, resp.getWriter());
     }
